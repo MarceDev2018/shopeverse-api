@@ -1,6 +1,6 @@
 package com.technova.shopeverse.controller;
 import com.technova.shopeverse.model.Product;
-import com.technova.shopeverse.repository.ProductRepository;
+import com.technova.shopeverse.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
 public class ProductController {
     @Autowired
 
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @GetMapping
 
     public List<Product> getAll() {
 
-        return productRepository.findAll();
+        return productService.getAllProducts();
 
     }
 
@@ -28,36 +28,28 @@ public class ProductController {
 
     public Product getById(@PathVariable Long id) {
 
-        return productRepository.findById(id).orElse(null);
+        return productService.getProductById(id).orElse(null);
 
     }
+
+
 
     @PostMapping
 
     public Product create(@RequestBody Product product) {
 
-        return productRepository.save(product);
+        return productService.createProduct(product);
 
     }
 
+
+
     @PutMapping("/{id}")
 
-    public Product update(@PathVariable Long id, @RequestBody Product productDetails) {
+    public Product update(@PathVariable Long id, @RequestBody Product product) {
 
-        Product product = productRepository.findById(id).orElse(null);
+        return productService.updateProduct(id, product);
 
-        if (product != null) {
-
-            product.setName(productDetails.getName());
-
-            product.setDescription(productDetails.getDescription());
-
-            product.setPrice(productDetails.getPrice());
-
-            return productRepository.save(product);
-
-        }
-        return null;
     }
 
 
@@ -66,7 +58,7 @@ public class ProductController {
 
     public void delete(@PathVariable Long id) {
 
-        productRepository.deleteById(id);
+        productService.deleteProduct(id);
 
     }
 
