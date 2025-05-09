@@ -1,98 +1,47 @@
 package com.technova.shopeverse.controller;
 
 import com.technova.shopeverse.model.Category;
+import com.technova.shopeverse.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
-
 public class CategoryController {
 
-    private List<Category> categories = new ArrayList<>();
-
-    public CategoryController() {
-
-        categories.add(new Category(1L, "Tecnología", "Productos electrónicos y computación"));
-
-        categories.add(new Category(2L, "Hogar", "Artículos para el hogar y decoración"));
-
-        categories.add(new Category(3L, "Indumentaria", "Ropa y accesorios"));
-
-    }
-
-    // GET /api/categories
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping
-
-    public List<Category> getAllCategories() {
-
-        return categories;
-
+    public List<Category> getAll() {
+        return categoryRepository.findAll();
     }
-
-    // GET /api/categories/{id}
 
     @GetMapping("/{id}")
-
-    public Category getCategoryById(@PathVariable Long id) {
-
-        return categories.stream()
-
-                .filter(c -> c.getId().equals(id))
-
-                .findFirst()
-
-                .orElse(null);
-
+    public Category getById(@PathVariable Long id) {
+        return categoryRepository.findById(id).orElse(null);
     }
-
-    // POST /api/categories
 
     @PostMapping
-
-    public Category createCategory(@RequestBody Category category) {
-
-        categories.add(category);
-
-        return category;
-
+    public Category create(@RequestBody Category category) {
+        return categoryRepository.save(category);
     }
-
-    // PUT /api/categories/{id}
 
     @PutMapping("/{id}")
-
-    public Category updateCategory(@PathVariable Long id, @RequestBody Category updatedCategory) {
-
-        for (Category c : categories) {
-
-            if (c.getId().equals(id)) {
-
-                c.setName(updatedCategory.getName());
-
-                c.setDescription(updatedCategory.getDescription());
-
-                return c;            }
-
+    public Category update(@PathVariable Long id, @RequestBody Category categoryDetails) {
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category != null) {
+            category.setName(categoryDetails.getName());
+            category.setDescription(categoryDetails.getDescription());
+            return categoryRepository.save(category);
         }
-
         return null;
-
     }
 
-    // DELETE /api/categories/{id}
-
     @DeleteMapping("/{id}")
-
-    public String deleteCategory(@PathVariable Long id) {
-
-        boolean removed = categories.removeIf(c -> c.getId().equals(id));
-
-        return removed ? "Categoría eliminada con éxito." : "Categoría no encontrada.";
-
-    }}
-
+    public void delete(@PathVariable Long id) {
+        categoryRepository.deleteById(id);
+    }
+}

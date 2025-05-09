@@ -1,8 +1,8 @@
 package com.technova.shopeverse.controller;
 import com.technova.shopeverse.model.Product;
+import com.technova.shopeverse.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,85 +12,62 @@ import java.util.List;
 @RequestMapping("/api/products")
 
 public class ProductController {
-    private List<Product> products = new ArrayList<>();
+    @Autowired
 
-
-    public ProductController() {
-
-        products.add(new Product(1L, "Laptop Lenovo", "Notebook 15 pulgadas", 850.0));
-
-        products.add(new Product(2L, "Mouse Logitech", "Mouse inalámbrico", 25.5));
-
-        products.add(new Product(3L, "Monitor Samsung", "Monitor 24 pulgadas", 199.99));
-
-    }
+    private ProductRepository productRepository;
 
     @GetMapping
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAll() {
 
-        return products;
+        return productRepository.findAll();
 
     }
 
     @GetMapping("/{id}")
 
-    public Product getProductById(@PathVariable Long id) {
+    public Product getById(@PathVariable Long id) {
 
-        return products.stream()
-
-                .filter(p -> p.getId().equals(id))
-
-                .findFirst()
-
-                .orElse(null);
+        return productRepository.findById(id).orElse(null);
 
     }
 
     @PostMapping
 
-    public Product createProduct(@RequestBody Product product) {
+    public Product create(@RequestBody Product product) {
 
-        products.add(product);
-
-        return product;
+        return productRepository.save(product);
 
     }
 
     @PutMapping("/{id}")
 
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+    public Product update(@PathVariable Long id, @RequestBody Product productDetails) {
 
-        for (Product p : products) {
+        Product product = productRepository.findById(id).orElse(null);
 
-            if (p.getId().equals(id)) {
+        if (product != null) {
 
-                p.setName(updatedProduct.getName());
+            product.setName(productDetails.getName());
 
-                p.setDescription(updatedProduct.getDescription());
+            product.setDescription(productDetails.getDescription());
 
-                p.setPrice(updatedProduct.getPrice());
+            product.setPrice(productDetails.getPrice());
 
-                return p;
-
-            }
+            return productRepository.save(product);
 
         }
-
         return null;
-
     }
+
+
 
     @DeleteMapping("/{id}")
 
-    public String deleteProduct(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
 
-        boolean removed = products.removeIf(p -> p.getId().equals(id));
-
-        return removed ? "Producto eliminado con éxito." : "Producto no encontrado.";
+        productRepository.deleteById(id);
 
     }
-
-
 
 }
