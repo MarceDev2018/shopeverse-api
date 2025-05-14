@@ -6,7 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 
 import jakarta.persistence.GenerationType;
-
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -17,18 +18,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-
+    @NotEmpty(message = "El nombre no puede estar vacío.")
     private String name;
+    @Size(max = 255, message = "La descripción no puede superar los 255 caracteres.")
 
     private String description;
 
     private Double price;
 
-
-
     public Product() {}
-
-
 
     public Product(Long id, String name, String description, Double price) {
 
@@ -41,9 +39,6 @@ public class Product {
         this.price = price;
 
     }
-
-
-
     // Getters y Setters
 
     public Long getId() {

@@ -6,6 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 
 import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 @Entity
 
 public class Category {
@@ -13,7 +16,9 @@ public class Category {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "El nombre no puede estar vacío.")
     private String name;
+    @Size(max = 255, message = "La descripción no puede superar los 255 caracteres.")
     private String description;
 
     public Category() {
@@ -27,10 +32,6 @@ public class Category {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
