@@ -1,13 +1,10 @@
 package com.technova.shopeverse.model;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Id;
-
-import jakarta.persistence.GeneratedValue;
-
-import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 @Entity
 
@@ -21,6 +18,10 @@ public class Category {
     @Size(max = 255, message = "La descripción no puede superar los 255 caracteres.")
     private String description;
 
+    @OneToMany(mappedBy = "category")
+
+    private List<Product> products;
+
     public Category() {
     }
 
@@ -32,6 +33,10 @@ public class Category {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,4 +55,11 @@ public class Category {
         this.description = description;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }

@@ -1,4 +1,5 @@
 package com.technova.shopeverse.controller;
+import com.technova.shopeverse.dto.CategoryDTO;
 import com.technova.shopeverse.model.Category;
 import com.technova.shopeverse.service.CategoryService; // Asumo que tienes un CategoryService
 import jakarta.validation.Valid;
@@ -58,6 +59,16 @@ public class CategoryController {
             return ResponseEntity.noContent().build(); // 204 No Content
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build(); // 404 Not Found si no se encuentra
+        }
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<CategoryDTO> getCategoryDetails(@PathVariable Long id) {
+        try {
+            CategoryDTO dto = categoryService.getCategoryDTOById(id);
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

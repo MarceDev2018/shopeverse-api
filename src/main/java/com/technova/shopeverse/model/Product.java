@@ -1,11 +1,6 @@
 package com.technova.shopeverse.model;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Id;
-
-import jakarta.persistence.GeneratedValue;
-
-import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -25,6 +20,12 @@ public class Product {
     private String description;
 
     private Double price;
+
+    @ManyToOne
+
+    @JoinColumn(name = "category_id") // Esta será la clave foránea en la base de datos
+
+    private Category category;
 
     public Product() {}
 
@@ -89,4 +90,11 @@ public class Product {
 
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

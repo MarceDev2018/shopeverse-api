@@ -1,5 +1,6 @@
 package com.technova.shopeverse.service;
 
+import com.technova.shopeverse.dto.CategoryDTO;
 import com.technova.shopeverse.model.Category;
 import com.technova.shopeverse.model.Product;
 import com.technova.shopeverse.repository.CategoryRepository;
@@ -23,4 +24,5 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
+    CategoryDTO getCategoryDTOById(Long id);
 }

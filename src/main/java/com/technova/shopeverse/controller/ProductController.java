@@ -1,4 +1,5 @@
 package com.technova.shopeverse.controller;
+import com.technova.shopeverse.dto.ProductDTO;
 import com.technova.shopeverse.model.Product;
 import com.technova.shopeverse.service.ProductService;
 import jakarta.validation.Valid;
@@ -62,6 +63,33 @@ public class ProductController {
             return ResponseEntity.notFound().build(); // 404 Not Found
 
         }
+
+    }
+
+    @GetMapping("/dto")
+
+    public ResponseEntity<List<ProductDTO>> getAllWithCategory() {
+
+        List<ProductDTO> dtoList = productService.getAllProductDTOs();
+
+        if (dtoList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(dtoList);
+
+    }
+
+    @GetMapping("/by-category/{categoryId}")
+
+    public ResponseEntity<List<ProductDTO>> getByCategory(@PathVariable Long categoryId) {
+
+        List<ProductDTO> products = productService.getByCategoryId(categoryId);
+
+        if (products.isEmpty()) {
+
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
 
     }
 

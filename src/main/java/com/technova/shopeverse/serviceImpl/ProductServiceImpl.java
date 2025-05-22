@@ -1,5 +1,6 @@
 package com.technova.shopeverse.serviceImpl;
 
+import com.technova.shopeverse.dto.ProductDTO;
 import com.technova.shopeverse.model.Product;
 import com.technova.shopeverse.repository.ProductRepository;
 import com.technova.shopeverse.service.ProductService;
@@ -17,7 +18,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return null;
+    }
+
+    @Override
+    public List<ProductDTO> getAllProductDTOs() {
+
+        return productRepository.findAll().stream()
+
+                .map(this::toDTO)
+
+                .toList();
+
     }
 
     @Override
@@ -39,5 +51,32 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductDTO toDTO(Product product) {
+
+        String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
+
+        return new ProductDTO(
+
+                product.getId(),
+
+                product.getName(),
+
+                product.getPrice(),
+
+                categoryName
+        );
+    }
+
+    public List<ProductDTO> getByCategoryId(Long categoryId) {
+
+        return productRepository.findByCategoryId(categoryId).stream()
+
+                .map(this::toDTO)
+
+                .toList();
+
     }
 }
