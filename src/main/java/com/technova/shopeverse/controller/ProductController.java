@@ -34,21 +34,16 @@ public class ProductController {
     }
     @PostMapping
     public ResponseEntity<Product> create(@Valid @RequestBody Product product, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        Product createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+        Product created = productService.createProduct(product);
+
+        return ResponseEntity.status(201).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
-        try {
-            Product updated = productService.updateProduct(id, product);
-            return ResponseEntity.ok(updated); // 200 OK
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Product> update(@Valid @PathVariable Long id, @RequestBody Product product) {
+        Product created = productService.createProduct(product);
+
+        return ResponseEntity.status(201).body(created);
 
     }
 

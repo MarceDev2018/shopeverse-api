@@ -33,16 +33,17 @@ public class CategoryController {
                 .orElse(ResponseEntity.notFound().build());
     }
     @PostMapping
-    public ResponseEntity<Category> create(@Valid @RequestBody Category category, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        Category createdCategory = categoryService.createCategory(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory); // 201 Created
+    public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
+
+        Category created = categoryService.createCategory(category);
+
+        return ResponseEntity.status(201).body(created);
+
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category) {
+    public ResponseEntity<Category> update(@Valid @PathVariable Long id, @RequestBody Category category) {
         try {
             Category updated = categoryService.updateCategory(id, category);
             return ResponseEntity.ok(updated);

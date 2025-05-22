@@ -15,7 +15,7 @@ public class Category {
     private Long id;
     @NotEmpty(message = "El nombre no puede estar vacío.")
     private String name;
-    @Size(max = 255, message = "La descripción no puede superar los 255 caracteres.")
+    @Size(max = 10, message = "La descripción no puede superar los 10 caracteres.")
     private String description;
 
     @OneToMany(mappedBy = "category")
