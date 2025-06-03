@@ -1,4 +1,4 @@
-package com.technova.shopverse.batch.model;
+package com.technova.shopeverse.batch.model;
 
 public class CategoryCsv {
     private Long id;

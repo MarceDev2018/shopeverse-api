@@ -1,4 +1,4 @@
-package com.technova.shopverse.batch.model;
+package com.technova.shopeverse.batch.model;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;

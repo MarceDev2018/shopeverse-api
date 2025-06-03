@@ -1,11 +1,11 @@
-package com.technova.shopverse.batch;
+package com.technova.shopeverse.batch;
 
-import com.technova.shopverse.batch.model.CategoryCsv;
-import com.technova.shopverse.batch.model.ProductCsv;
-import com.technova.shopverse.model.Category;
-import com.technova.shopverse.model.Product;
-import com.technova.shopverse.repository.CategoryRepository;
-import com.technova.shopverse.repository.ProductRepository;
+import com.technova.shopeverse.batch.model.CategoryCsv;
+import com.technova.shopeverse.batch.model.ProductCsv;
+import com.technova.shopeverse.model.Category;
+import com.technova.shopeverse.model.Product;
+import com.technova.shopeverse.repository.CategoryRepository;
+import com.technova.shopeverse.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
