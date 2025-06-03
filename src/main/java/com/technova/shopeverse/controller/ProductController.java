@@ -2,10 +2,13 @@ package com.technova.shopeverse.controller;
 import com.technova.shopeverse.dto.ProductDTO;
 import com.technova.shopeverse.model.Product;
 import com.technova.shopeverse.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,10 +18,16 @@ import java.util.List;
 
 public class ProductController {
     @Autowired
+
     private ProductService productService;
+    @Operation(
+            summary = "Obtener todos los productos",
+            description = "Este endpoint devuelve una lista con todos los productos disponibles"
+    )
+    @ApiResponse(responseCode = "200", description = "Lista de productos retornada correctamente")
     @GetMapping
-    public ResponseEntity<List<Product>> getAll() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductDTO>> getAll() {
+        List<ProductDTO> products = productService.getAllProducts();
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build(); // 204 No Content
         } else {
@@ -32,60 +41,53 @@ public class ProductController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Product> create(@Valid @RequestBody Product product, BindingResult result) {
-        Product created = productService.createProduct(product);
-
-        return ResponseEntity.status(201).body(created);
+        if (result.hasErrors()) {
+            // Si hay errores de validación, devolvemos un 400 Bad Request con los errores.
+            return ResponseEntity.badRequest().body(null);
+        }
+        Product createdProduct = productService.createProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@Valid @PathVariable Long id, @RequestBody Product product) {
-        Product created = productService.createProduct(product);
-
-        return ResponseEntity.status(201).body(created);
-
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+        try {
+            Product updated = productService.updateProduct(id, product);
+            return ResponseEntity.ok(updated); // 200 OK
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build(); // 404 Not Found si no existe
+        }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);
             return ResponseEntity.noContent().build(); // 204 No Content
-
         } catch (IllegalArgumentException e) {
-
             return ResponseEntity.notFound().build(); // 404 Not Found
-
         }
-
     }
-
     @GetMapping("/dto")
-
     public ResponseEntity<List<ProductDTO>> getAllWithCategory() {
-
-        List<ProductDTO> dtoList = productService.getAllProductDTOs();
-
+        List<ProductDTO> dtoList = productService.getAllProducts();
         if (dtoList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(dtoList);
-
     }
-
     @GetMapping("/by-category/{categoryId}")
-
     public ResponseEntity<List<ProductDTO>> getByCategory(@PathVariable Long categoryId) {
-
         List<ProductDTO> products = productService.getByCategoryId(categoryId);
-
         if (products.isEmpty()) {
-
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(products);
-
     }
 
 }

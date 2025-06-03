@@ -12,23 +12,21 @@ public class CategoryDTO {
 
     private List<String> productNames;
 
-
-
-    public CategoryDTO() {}
-
-
-
-    public CategoryDTO(Long id, String name, String description, List<String> productNames) {
-
-        this.id = id;
-
-        this.name = name;
-
-        this.description = description;
-
-        this.productNames = productNames;
-
+    public CategoryDTO() {
     }
+    public CategoryDTO(Long id, String name, String description, List<String> productNames) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.productNames = productNames;
+    }
+
+    public CategoryDTO(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
 
     public Long getId() {
         return id;

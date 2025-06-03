@@ -42,19 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    @Override
     public CategoryDTO getCategoryDTOById(Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
-
-        List<String> productNames = category.getProducts().stream()
-                .map(product -> product.getName())
-                .toList();
-
-        return new CategoryDTO(
-                category.getId(),
-                category.getName(),
-                category.getDescription(),
-                productNames
-        );
+        return null;
     }
+
 }

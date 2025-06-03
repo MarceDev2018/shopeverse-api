@@ -17,19 +17,15 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public List<Product> getAllProducts() {
-        return null;
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     @Override
     public List<ProductDTO> getAllProductDTOs() {
-
-        return productRepository.findAll().stream()
-
-                .map(this::toDTO)
-
-                .toList();
-
+        return null;
     }
 
     @Override
@@ -52,30 +48,20 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
-
     @Override
     public ProductDTO toDTO(Product product) {
-
         String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
-
         return new ProductDTO(
-
                 product.getId(),
-
                 product.getName(),
-
                 product.getPrice(),
-
                 categoryName
         );
     }
-
+    @Override
     public List<ProductDTO> getByCategoryId(Long categoryId) {
-
         return productRepository.findByCategoryId(categoryId).stream()
-
                 .map(this::toDTO)
-
                 .toList();
 
     }

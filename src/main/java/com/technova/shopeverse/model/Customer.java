@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 
-@Table(name = "client") // Nombre de la tabla en la base de datos
+@Table(name = "client")
 
 public class Customer {
 
@@ -16,7 +16,7 @@ public class Customer {
 
 
 
-    @Column(name = "full_name", length = 100, nullable = false) // Nombre de la columna en la base de datos
+    @Column(name = "full_name", length = 100, nullable = false)
 
     private String name;
 
@@ -24,8 +24,8 @@ public class Customer {
 
 
 
-    @Transient // Este campo no se guarda en la base de datos
+    @Transient
 
-    private String temporaryToken; // Token temporal para autenticación
+    private String temporaryToken;
 
 }
